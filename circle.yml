@@ -28,6 +28,3 @@ dependencies:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
-  post:
-    - php-fpm: { background: true }
-    - sudo ./ci/circle/nginx/install-nginx.sh
