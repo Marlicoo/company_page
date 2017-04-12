@@ -1,0 +1,30 @@
+general:
+  branches:
+    ignore:
+      - prod
+
+machine:
+  environment:
+    SYMFONY_ENV: test
+    DEPLOYER_DB_HOST: 127.0.0.1
+    DEPLOYER_DB_NAME: company
+    DEPLOYER_DB_USER: root
+    DEPLOYER_DB_PASSWORD: "~"
+
+  node:
+    version: 4.1.0
+  services:
+    - mysql
+  hosts:
+    company.dev: 127.0.0.1
+
+dependencies:
+  cache_directories:
+    - vendor
+    - "~/php7"
+  pre:
+    - pip install asynctest
+    - sudo apt-get install libpspell-dev
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
