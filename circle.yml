@@ -10,7 +10,7 @@ machine:
     DEPLOYER_DB_NAME: company
     DEPLOYER_DB_USER: root
     DEPLOYER_DB_PASSWORD: "~"
-    PATH: "~/php7/bin:~/php7/sbin:$PATH"
+
   node:
     version: 4.1.0
   services:
@@ -25,12 +25,6 @@ dependencies:
   pre:
     - pip install asynctest
     - sudo apt-get install libpspell-dev
-  override:
-    - ~/php7/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - ~/php7/bin/php composer-setup.php
-    - ~/php7/bin/php -r "unlink('composer-setup.php');"
-    - ~/php7/bin/php composer.phar install -n
-
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
