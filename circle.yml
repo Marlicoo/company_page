@@ -22,7 +22,6 @@ dependencies:
   pre:
     - pip install asynctest
     - sudo apt-get install libpspell-dev
-    - if [[ ! -e ~/php7 ]]; then sudo ./ci/circle/php/build-php7.sh ~/php7; fi
   override:
     - ~/php7/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - ~/php7/bin/php composer-setup.php
