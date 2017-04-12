@@ -1,0 +1,38 @@
+general:
+  branches:
+    ignore:
+      - prod
+
+machine:
+  environment:
+    SYMFONY_ENV: test
+    DEPLOYER_DB_HOST: 127.0.0.1
+    DEPLOYER_DB_NAME: company
+    DEPLOYER_DB_USER: root
+    DEPLOYER_DB_PASSWORD: "~"
+  services:
+    - mysql
+  hosts:
+    company.dev: 127.0.0.1
+
+dependencies:
+  cache_directories:
+    - vendor
+    - "~/php7"
+  pre:
+    - pip install asynctest
+    - sudo apt-get install libpspell-dev
+    - if [[ ! -e ~/php7 ]]; then sudo ./ci/circle/php/build-php7.sh ~/php7; fi
+  override:
+    - ~/php7/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - ~/php7/bin/php composer-setup.php
+    - ~/php7/bin/php -r "unlink('composer-setup.php');"
+    - ~/php7/bin/php composer.phar install -n
+
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+  post:
+    - php-fpm: { background: true }
+    - sudo ./ci/circle/nginx/install-nginx.sh
+
