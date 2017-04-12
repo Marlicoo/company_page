@@ -10,6 +10,9 @@ machine:
     DEPLOYER_DB_NAME: company
     DEPLOYER_DB_USER: root
     DEPLOYER_DB_PASSWORD: "~"
+    PATH: "~/php7/bin:~/php7/sbin:$PATH"
+  node:
+    version: 4.1.0
   services:
     - mysql
   hosts:
@@ -34,4 +37,3 @@ test:
   post:
     - php-fpm: { background: true }
     - sudo ./ci/circle/nginx/install-nginx.sh
-
