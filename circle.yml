@@ -11,12 +11,15 @@ machine:
     DEPLOYER_DB_USER: root
     DEPLOYER_DB_PASSWORD: "~"
 
-  node:
-    version: 4.1.0
   services:
     - mysql
   hosts:
     company.dev: 127.0.0.1
+
+  pre:
+      - sudo apt-get update; USE_PRECOMPILE=true sudo -E circleci-install php 7.0
+  php:
+    version: 7.0
 
 dependencies:
   cache_directories:
@@ -28,3 +31,4 @@ dependencies:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+    - php --version
