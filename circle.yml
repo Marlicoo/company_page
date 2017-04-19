@@ -31,7 +31,6 @@ dependencies:
   override:
     - composer install --prefer-source --no-interaction --no-scripts
     - cp app/config/parameters_test.circle.yml app/config/parameters.yml
-    - php app/console asset:install
 
 test:
   override:
