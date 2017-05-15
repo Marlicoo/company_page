@@ -11,12 +11,15 @@ machine:
     DEPLOYER_DB_USER: root
     DEPLOYER_DB_PASSWORD: "~"
 
-  node:
-    version: 4.1.0
   services:
     - mysql
   hosts:
     company.dev: 127.0.0.1
+
+  pre:
+      - sudo apt-get update; USE_PRECOMPILE=true sudo -E circleci-install php 7.0.17
+  php:
+    version: 7.0.17
 
 dependencies:
   cache_directories:
@@ -25,6 +28,11 @@ dependencies:
   pre:
     - pip install asynctest
     - sudo apt-get install libpspell-dev
+  override:
+    - composer install --prefer-source --no-interaction --no-scripts
+    - cp app/config/parameters_test.circle.yml app/config/parameters.yml
+
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+    - php --version
