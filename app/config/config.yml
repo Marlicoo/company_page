@@ -2,11 +2,13 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: pl
+    sonata.user.admin.user.entity: AppBundle\Entity\User
 
 framework:
     #esi: ~
@@ -51,6 +53,8 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #path: '%database_path%'
+        types:
+            json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
@@ -66,12 +70,31 @@ swiftmailer:
     spool: { type: memory }
 
 fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
+    group:
+        group_class:   AppBundle\Entity\User
+        group_manager: sonata.user.orm.group_manager 
+
 
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/DoctrineMigrations"
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.user.block.menu:
+        sonata.user.block.account:
+        sonata.block.service.text:
+
+sonata_user:
+    class:
+        user: AppBundle\Entity\User
+        group: AppBundle\Entity\User
+
