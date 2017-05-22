@@ -1,4 +1,7 @@
 services:
-#    admin.example:
-#        class: AdminBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    company.user.admin:
+        class: AdminBundle\Admin\UserAdmin
+        arguments: [~, AppBundle\Entity\User,  ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Użytkownicy, label: Lista użytkowników }

@@ -9,6 +9,7 @@ imports:
 parameters:
     locale: pl
     sonata.user.admin.user.entity: AppBundle\Entity\User
+    sonata.user.admin.user.class: AdminBundle\Admin\UserAdmin
 
 framework:
     #esi: ~
@@ -89,12 +90,23 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
-        sonata.user.block.menu:
-        sonata.user.block.account:
-        sonata.block.service.text:
 
+sonata_admin:
+    title:      Company
+    title_logo: /bundles/sonataadmin/logo_title.png
+    templates:
+        # default actions templates, should extend a global templates
+        list:    SonataAdminBundle:CRUD:list.html.twig
+        show:    SonataAdminBundle:CRUD:show.html.twig
+        edit:    SonataAdminBundle:CRUD:edit.html.twig
+    dashboard:
+        groups:
+            user.admin:
+                  label: Użytkownicy
+                  items:
+                        - company.user.admin
+                  roles: [ ROLE_ADMIN ]
 sonata_user:
-    class:
-        user: AppBundle\Entity\User
-        group: AppBundle\Entity\User
+    security_acl: true
+    manager_type: orm
 
